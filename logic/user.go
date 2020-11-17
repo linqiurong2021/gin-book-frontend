@@ -1,15 +1,13 @@
 package logic
 
 import (
-	"fmt"
-	"linqiurong2021/gin-book-frontend/config"
 	"linqiurong2021/gin-book-frontend/dao"
 	"linqiurong2021/gin-book-frontend/models"
+	"linqiurong2021/gin-book-frontend/myjwt"
 	"linqiurong2021/gin-book-frontend/services"
 	"linqiurong2021/gin-book-frontend/utils"
 	"net/http"
 
-	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )
 
@@ -33,35 +31,19 @@ func Login(c *gin.Context) string {
 		return ""
 	}
 	//
-	singString := JWTToken(user)
+	singString, err := JWTToken(user)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, utils.BadRequest(err.Error(), ""))
+		return ""
+	}
 
 	return singString
 }
 
 // JWTToken  JSONWebToken
-func JWTToken(user *models.User) string {
+func JWTToken(user *models.User) (string, error) {
 	//
-	mySigningKey := []byte(config.Conf.JWTSignKey)
-	// 自定义
-	type MyClaims struct {
-		ID   uint   `json:"id"`
-		Name string `json:"name"`
-		jwt.StandardClaims
-	}
-	//
-	claims := MyClaims{
-		user.ID,
-		user.Name,
-		jwt.StandardClaims{
-			ExpiresAt: config.Conf.TokenExpireMinutes * 60, // 设置的分钟之后过期
-			Issuer:    "test",
-		},
-	}
-	//
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	singString, err := token.SignedString(mySigningKey)
-	fmt.Printf("%v %v", singString, err)
-	return singString
+	return myjwt.Create(user)
 }
 
 // NameExists 校验用户名是否存在

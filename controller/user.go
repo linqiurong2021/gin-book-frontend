@@ -26,3 +26,8 @@ func Login(c *gin.Context) {
 		c.JSON(http.StatusOK, utils.BadRequest("create token failure", ""))
 	}
 }
+
+// Token 校验测试
+func Token(c *gin.Context) {
+	c.JSON(http.StatusOK, utils.BadRequest("token validate", ""))
+}

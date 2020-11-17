@@ -47,6 +47,7 @@ func userGroup(g *gin.RouterGroup) {
 	user := g.Group("/user").Use(middlewares.AuthCheck())
 	{
 		user.POST("/", controller.Create)
+		user.POST("/token", middlewares.JWTTokenCheck(), controller.Token)
 		user.POST("/login", controller.Login)
 	}
 }
