@@ -1,10 +1,8 @@
 package models
 
-import "gorm.io/gorm"
-
 // Book 书集
 type Book struct {
-	gorm.Model
+	Common  `gorm:"embedded"`
 	Title   string  `json:"title" gorm:"title"`
 	Auth    string  `json:"auth" gorm:"auth"`
 	Price   float32 `json:"price" gorm:"price"`

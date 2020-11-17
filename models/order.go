@@ -1,10 +1,8 @@
 package models
 
-import "gorm.io/gorm"
-
 // Order  订单
 type Order struct {
-	gorm.Model
+	Common      `gorm:"embedded"`
 	TotalCount  uint    `json:"total_count" gorm:"total_count"`
 	TotalAmount float32 `json:"total_amount" gorm:"total_amount"`
 	State       uint    `json:"state" gorm:"state"`
@@ -15,7 +13,7 @@ type Order struct {
 
 // OrderItem 购物车每项
 type OrderItem struct {
-	gorm.Model
+	Common  `gorm:"embedded"`
 	Count   uint    `json:"count" gorm:"count"`
 	Amount  float32 `json:"amount" gorm:"amount"`
 	Title   string  `json:"title" gorm:"title"`

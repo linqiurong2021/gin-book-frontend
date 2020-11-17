@@ -6,9 +6,11 @@ import (
 
 // AppConfig App配置项
 type AppConfig struct {
-	Release      bool `ini:"release"`
-	Port         int  `ini:"port"`
-	*MySQLConfig `ini:"mysql"`
+	Release            bool   `ini:"release"`
+	Port               int    `ini:"port"`
+	JWTSignKey         string `ini:"JWTSingKey"`
+	TokenExpireMinutes int64  `ini:"tokenExpireMinutes"`
+	*MySQLConfig       `ini:"mysql"`
 }
 
 // MySQLConfig 数据库配置项

@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"linqiurong2021/gin-book-frontend/controller"
 	"linqiurong2021/gin-book-frontend/middlewares"
 	"linqiurong2021/gin-book-frontend/utils"
 	"net/http"
@@ -25,17 +26,28 @@ func notMethod(c *gin.Context) {
 	c.Abort()
 }
 
-//
+// 未匹配到路由时
+func noRoute(c *gin.Context) {
+	c.JSON(http.StatusBadRequest, utils.BadRequest("not found route", ""))
+	c.Abort()
+}
+
+// 系统默认的路由
 func defaultRouter(r *gin.Engine) {
 
 	r.NoMethod(notMethod)
+	// 未匹配到路由时
+	r.NoRoute(noRoute)
+	// 心跳检测
+	r.GET("/ping", controller.Ping)
 }
 
 // UserGroup User路由
 func userGroup(g *gin.RouterGroup) {
-	g.Group("/user").Use(middlewares.AuthCheck())
+	user := g.Group("/user").Use(middlewares.AuthCheck())
 	{
-
+		user.POST("/", controller.Create)
+		user.POST("/login", controller.Login)
 	}
 }
 

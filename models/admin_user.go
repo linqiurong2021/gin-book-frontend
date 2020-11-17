@@ -1,10 +1,8 @@
 package models
 
-import "gorm.io/gorm"
-
 // AdminUser 管理员
 type AdminUser struct {
-	gorm.Model
+	Common   `gorm:"embedded"`
 	UserName string `json:"user_name" gorm:"user_name"`
 	Password string `json:"password" gorm:"password"`
 	Email    string `json:"email" gorm:"email"`

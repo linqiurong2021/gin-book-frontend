@@ -27,6 +27,11 @@ func Success(msg string, data interface{}) Response {
 	return NewResponse(http.StatusOK, msg, data)
 }
 
+// CreateFailure 新增失败
+func CreateFailure(msg string, data interface{}) Response {
+	return NewResponse(http.StatusAccepted, "create failure", "")
+}
+
 // BadRequest 失败返回
 func BadRequest(msg string, data interface{}) Response {
 	return NewResponse(http.StatusBadRequest, msg, data)
