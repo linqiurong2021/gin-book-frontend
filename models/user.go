@@ -11,9 +11,9 @@ import (
 // User 用户
 type User struct {
 	Common   `gorm:"embedded"`
-	Name     string `json:"name" gorm:"name"`
-	Password string `json:"password" gorm:"password"`
-	Phone    string `json:"phone" gorm:"phone"`
+	Name     string `json:"name" gorm:"name;type:varchar(20);"`
+	Password string `json:"password" gorm:"password;type:varchar(32);"`
+	Phone    string `json:"phone" gorm:"phone;type:char(11);"`
 	Cart     *Cart  `json:"cart"`
 }
 

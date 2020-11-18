@@ -6,38 +6,45 @@ import (
 	"linqiurong2021/gin-book-frontend/myjwt"
 	"linqiurong2021/gin-book-frontend/services"
 	"linqiurong2021/gin-book-frontend/utils"
+	"linqiurong2021/gin-book-frontend/validator"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 // Login 登录
-func Login(c *gin.Context) string {
+func Login(c *gin.Context) (string, bool) {
 	//
-	var login = new(dao.Login)
-	c.BindJSON(&login)
+	// var login = new(dao.Login) // binding 校验无效
+	var login dao.Login       // binding 校验有效
+	err := c.BindJSON(&login) // 绑定并校验
+	// 参数校验判断
+	ok := validator.Validate(c, err)
+	if !ok {
+		return "", false
+	}
 	// 验证码校验
 	if !CheckCode(login.Code) {
 		c.JSON(http.StatusBadRequest, utils.BadRequest("code invalidate", ""))
-		return ""
+		return "", false
 	}
 	user, err := services.GetUserByNameAndEncryptPassword(login.UserName, MD5Encrypt(login.Password))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, utils.BadRequest(err.Error(), ""))
-		return ""
+		return "", false
 	}
 	if user == nil {
-		c.JSON(http.StatusBadRequest, utils.BadRequest("user name or password invalidate", ""))
-		return ""
+		c.JSON(http.StatusForbidden, utils.Forbidden("user name or password invalidate", ""))
+		return "", false
 	}
 	//
 	singString, err := JWTToken(user)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, utils.BadRequest(err.Error(), ""))
-		return ""
+		return "", false
 	}
 
-	return singString
+	return singString, true
 }
 
 // JWTToken  JSONWebToken
@@ -73,30 +80,33 @@ func PhoneExists(c *gin.Context, user *models.User) (exists bool, err error) {
 }
 
 // CreateUser 创建用户
-func CreateUser(c *gin.Context) (err error) {
-	//
-	var user = new(models.User)
-	if err := c.BindJSON(&user); err != nil {
-		return err
+func CreateUser(c *gin.Context) (ok bool, err error) {
+	var userCreate dao.UserCreate
+	err = c.ShouldBindJSON(&userCreate) // 绑定并校验
+	// 参数校验判断
+	ok = validator.Validate(c, err)
+	if !ok {
+		return false, nil
 	}
+	var user = new(models.User)
 	// 判断名称是否存在
 	exists, err := NameExists(c, user)
 	if err != nil {
-		return err
+		return false, err
 	}
 	if exists {
 		c.JSON(http.StatusBadRequest, utils.BadRequest("name has exists", ""))
-		return nil
+		return false, nil
 	}
 	// 判断手机号是否存在
 	exists, err = PhoneExists(c, user)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, utils.BadRequest(err.Error(), ""))
-		return err
+		return false, err
 	}
 	if exists {
 		c.JSON(http.StatusBadRequest, utils.BadRequest("phone has exists", ""))
-		return nil
+		return false, nil
 	}
 	//
 	// 密码加密
@@ -105,12 +115,12 @@ func CreateUser(c *gin.Context) (err error) {
 	outUser, err := services.CreateUser(user)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, utils.BadRequest(err.Error(), ""))
-		return err
+		return false, err
 	}
 	// 创建成功
 	c.JSON(http.StatusBadRequest, utils.Success("create success", outUser))
 	//
-	return nil
+	return true, nil
 
 }
 

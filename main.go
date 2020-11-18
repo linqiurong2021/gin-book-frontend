@@ -6,6 +6,7 @@ import (
 	"linqiurong2021/gin-book-frontend/models"
 	"linqiurong2021/gin-book-frontend/mysql"
 	"linqiurong2021/gin-book-frontend/routers"
+	"linqiurong2021/gin-book-frontend/validator"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -21,6 +22,11 @@ func main() {
 	}
 	if err := mysql.InitMySQL(config.Conf.MySQLConfig); err != nil {
 		fmt.Printf("init mysql failed, err:%v\n", err)
+		return
+	}
+	// 开启校验转换
+	if err := validator.InitTrans("zh"); err != nil {
+		fmt.Printf("init trans failed, err:%v\n", err)
 		return
 	}
 	// 绑定数据表

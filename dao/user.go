@@ -1,8 +1,8 @@
 package dao
 
-// User 用户
-type User struct {
-	UserName string `json:"user_name"`
-	Password string `json:"password"`
-	Phone    string `json:"phone"`
+// UserCreate 用户创建
+type UserCreate struct {
+	Name     string `json:"name" binding:"required,min=6,max=20"`
+	Password string `json:"password" binding:"required,min=6,max=20"`
+	Phone    string `json:"phone" binding:"required,len=11"`
 }

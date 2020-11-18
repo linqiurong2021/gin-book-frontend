@@ -41,3 +41,13 @@ func BadRequest(msg string, data interface{}) Response {
 func Forbidden(msg string, data interface{}) Response {
 	return NewResponse(http.StatusForbidden, msg, data)
 }
+
+// Unauthorized 未授权
+func Unauthorized(msg string, data interface{}) Response {
+	return NewResponse(http.StatusUnauthorized, msg, data)
+}
+
+// ValidateFailure 校验
+func ValidateFailure(data interface{}) Response {
+	return NewResponse(http.StatusBadRequest, "validate failure! please see the field data for details.", data)
+}
