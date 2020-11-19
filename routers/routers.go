@@ -13,9 +13,10 @@ import (
 func RegisterRouter(r *gin.Engine) {
 	v1 := r.Group("/v1")
 	{
-		userGroup(v1)
-		bookGroup(v1)
-		cartGroup(v1)
+		// 需要校验的分组
+		authGroup(v1)
+		// 不需要校验
+		noAuthGroup(v1)
 		// 默认路由
 		defaultRouter(r)
 	}
@@ -40,15 +41,30 @@ func defaultRouter(r *gin.Engine) {
 	r.NoRoute(noRoute)
 	// 心跳检测
 	r.GET("/ping", controller.Ping)
+
+}
+
+// noAuthGroup 不需要登录校验
+func noAuthGroup(version *gin.RouterGroup) {
+	version.POST("/login", controller.Login)
+	version.GET("/logout", controller.Logout)
+	// 新增用户(注册)
+	version.POST("/user", controller.Create)
+}
+
+// authGroup 需要登录校验
+func authGroup(version *gin.RouterGroup) {
+	userGroup(version)
 }
 
 // UserGroup User路由
 func userGroup(g *gin.RouterGroup) {
-	user := g.Group("/user").Use(middlewares.AuthCheck())
+	// 中间件
+	user := g.Group("/user").Use(middlewares.JWTTokenCheck())
 	{
-		user.POST("/", controller.Create)
-		user.POST("/token", middlewares.JWTTokenCheck(), controller.Token)
-		user.POST("/login", controller.Login)
+		user.PUT("", controller.Update)
+		// user.DELETE("", controller.Delete)
+		user.GET("", controller.ListByPage)
 	}
 }
 

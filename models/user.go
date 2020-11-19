@@ -11,9 +11,9 @@ import (
 // User 用户
 type User struct {
 	Common   `gorm:"embedded"`
-	Name     string `json:"name" gorm:"name;type:varchar(20);"`
-	Password string `json:"password" gorm:"password;type:varchar(32);"`
-	Phone    string `json:"phone" gorm:"phone;type:char(11);"`
+	Name     string `json:"name" gorm:"name;type:varchar(20);" binding:"required,min=6,max=20"`
+	Password string `json:"password" gorm:"password;type:varchar(32);" binding:"required,min=6,max=20"`
+	Phone    string `json:"phone" gorm:"phone;type:char(11);" binding:"len=11"`
 	Cart     *Cart  `json:"cart"`
 }
 
@@ -43,7 +43,7 @@ func GetUserByNameAndEncryptPassword(userName string, encryptPassword string) (o
 		return nil, nil
 	}
 	if record.Error != nil {
-		fmt.Print("BBBBB###")
+		// fmt.Print("BBBBB###")
 		return nil, record.Error
 	}
 	return user, nil

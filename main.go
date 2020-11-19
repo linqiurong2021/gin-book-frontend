@@ -33,5 +33,5 @@ func main() {
 	mysql.DB.AutoMigrate(&models.Book{}, &models.User{}, &models.Cart{}, &models.CartItem{}, &models.Order{}, &models.OrderItem{})
 	// 注册路由
 	routers.RegisterRouter(r)
-	r.Run(":9001")
+	r.Run(fmt.Sprintf(":%#v", config.Conf.Port))
 }
