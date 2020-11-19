@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"linqiurong2021/gin-book-frontend/utils"
 	"net/http"
+	"reflect"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -38,6 +39,12 @@ func InitTrans(locale string) (err error) {
 		if !ok {
 			return fmt.Errorf("uni.GetTranslator(%s) failed", locale)
 		}
+
+		//注册一个函数，获取struct tag里自定义的label作为字段名
+		v.RegisterTagNameFunc(func(fld reflect.StructField) string {
+			name := fld.Tag.Get("label")
+			return name
+		})
 
 		// 注册翻译器
 		switch locale {

@@ -6,7 +6,7 @@ import (
 
 // CreateUser 创建用户
 func CreateUser(inUser *models.User) (outUser *models.User, err error) {
-	return models.Create(inUser)
+	return models.CreateUser(inUser)
 }
 
 // GetUserByID 通过用户ID获取
@@ -44,4 +44,17 @@ func UpdateUser(info *models.User) (user *models.User, err error) {
 func DeleteUserByID(userID int) (user *models.User, err error) {
 
 	return models.DeleteUserByID(userID)
+}
+
+// GetListUserByPage 通过ID删除用户
+func GetListUserByPage(page int, pageSize int) (userList []*models.User, count int64) {
+	userList, count = models.GetListUserByPage(page, pageSize)
+	return
+}
+
+// GetList 通过ID删除用户
+func GetList() (userList []*models.User) {
+
+	userList = models.GetListUser()
+	return
 }

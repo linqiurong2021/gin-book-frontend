@@ -11,14 +11,14 @@ import (
 // User 用户
 type User struct {
 	Common   `gorm:"embedded"`
-	Name     string `json:"name" gorm:"name;type:varchar(20);" binding:"required,min=6,max=20"`
-	Password string `json:"password" gorm:"password;type:varchar(32);" binding:"required,min=6,max=20"`
-	Phone    string `json:"phone" gorm:"phone;type:char(11);" binding:"len=11"`
+	Name     string `json:"name" gorm:"name;type:varchar(20);" binding:"required,min=6,max=20" label:"用户名" `
+	Password string `json:"password" gorm:"password;type:varchar(32);" binding:"required,min=6,max=20" label:"密码"`
+	Phone    string `json:"phone" gorm:"phone;type:char(11);" binding:"len=11" label:"手机号"`
 	Cart     *Cart  `json:"cart"`
 }
 
 // Create 创建用户
-func Create(inUser *User) (user *User, err error) {
+func CreateUser(inUser *User) (user *User, err error) {
 	if err := mysql.DB.Create(&inUser).Error; err != nil {
 		return nil, err
 	}
@@ -92,4 +92,17 @@ func GetUserByFieldValue(field string, value string) (outUser *User, err error) 
 	}
 
 	return user, nil
+}
+
+// GetListUserByPage 获取列表 分页
+func GetListUserByPage(page int, pageSize int) (userList []*User, count int64) {
+	mysql.DB.Debug().Offset((page - 1) * pageSize).Limit(pageSize).Find(&userList)
+	mysql.DB.Debug().Find(&User{}).Count(&count)
+	return
+}
+
+// GetListUser 获取列表 不分页
+func GetListUser() (userList []*User) {
+	mysql.DB.Debug().Find(&userList)
+	return
 }

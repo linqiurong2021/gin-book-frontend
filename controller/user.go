@@ -8,8 +8,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Create 新增用户
-func Create(c *gin.Context) {
+// CreateUser 新增用户
+func CreateUser(c *gin.Context) {
 	ok, err := logic.CreateUser(c)
 	if !ok {
 		if err != nil {
@@ -20,8 +20,8 @@ func Create(c *gin.Context) {
 	}
 }
 
-// Update 更新
-func Update(c *gin.Context) {
+// UpdateUser 更新
+func UpdateUser(c *gin.Context) {
 	ok, err := logic.UpdateUser(c)
 	if !ok {
 		if err != nil {
@@ -32,14 +32,21 @@ func Update(c *gin.Context) {
 	}
 }
 
-// Delete 删除
-func Delete(c *gin.Context) {
+// DeleteUser 删除
+func DeleteUser(c *gin.Context) {
 	c.JSON(http.StatusOK, utils.Success("Delete success", ""))
 }
 
-// ListByPage 删除
-func ListByPage(c *gin.Context) {
-	c.JSON(http.StatusOK, utils.Success("ListByPage success", ""))
+// ListUserByPage 列表分页
+func ListUserByPage(c *gin.Context) {
+	logic.ListUserByPage(c)
+	return
+}
+
+// ListUser 列表
+func ListUser(c *gin.Context) {
+	logic.ListUser(c)
+	return
 }
 
 // Login 登录
@@ -53,5 +60,5 @@ func Login(c *gin.Context) {
 
 // Logout 退出登录
 func Logout(c *gin.Context) {
-	logic.Logout()
+	logic.Logout(c)
 }

@@ -1,0 +1,20 @@
+package dao
+
+// Login 登录表单
+type Login struct {
+	UserName string `json:"user_name" binding:"required,min=6,max=20" label:"账号"`
+	Password string `json:"password" binding:"required,min=6,max=20"  label:"密码"`
+	Code     string `json:"code" binding:"required,len=6"  label:"验证码"`
+}
+
+// Page 分页
+type Page struct {
+	Page     int `form:"page" binding:"required,numeric,gte=1" label:"页码"`       // 大于1 GET 需要用formtag
+	PageSize int `form:"page_size" binding:"required,numeric,gte=10" label:"条数"` // 大于 10 GET 需要用formtag
+}
+
+// ListPage 分页返回数据格式
+type ListPage struct {
+	Total int64       `json:"total"`
+	List  interface{} `json:"list"`
+}

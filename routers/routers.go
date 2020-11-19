@@ -49,12 +49,17 @@ func noAuthGroup(version *gin.RouterGroup) {
 	version.POST("/login", controller.Login)
 	version.GET("/logout", controller.Logout)
 	// 新增用户(注册)
-	version.POST("/user", controller.Create)
+	version.POST("/user", controller.CreateUser)
+	//
+	bookGroup(version)
 }
 
 // authGroup 需要登录校验
 func authGroup(version *gin.RouterGroup) {
+	// 用户
 	userGroup(version)
+	// 购物车
+	cartGroup(version)
 }
 
 // UserGroup User路由
@@ -62,9 +67,12 @@ func userGroup(g *gin.RouterGroup) {
 	// 中间件
 	user := g.Group("/user").Use(middlewares.JWTTokenCheck())
 	{
-		user.PUT("", controller.Update)
+		user.PUT("", controller.UpdateUser)
 		// user.DELETE("", controller.Delete)
-		user.GET("", controller.ListByPage)
+		// 分页校验 middlewares.Page()
+		user.GET("", middlewares.Page(), controller.ListUserByPage)
+
+		user.GET("/list", controller.ListUser)
 	}
 }
 

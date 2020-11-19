@@ -101,9 +101,22 @@ func CreateUser(c *gin.Context) (ok bool, err error) {
 		return false, nil
 	}
 	// 判断名称是否存在
-	ok, err = NameAndPhoneExists(c, &user, 0)
-	if !ok {
-		return ok, err
+	exists, err := NameExists(c, &user, cached.User.ID)
+	if err != nil {
+		return false, err
+	}
+	if exists {
+		c.JSON(http.StatusBadRequest, utils.BadRequest("name has exists", ""))
+		return false, nil
+	}
+	// 判断手机号是否存在
+	exists, err = PhoneExists(c, &user, cached.User.ID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, utils.BadRequest(err.Error(), ""))
+		return false, err
+	}
+	if exists {
+		c.JSON(http.StatusBadRequest, utils.BadRequest("phone has exists", ""))
 	}
 	//
 	// 密码加密
@@ -155,10 +168,24 @@ func UpdateUser(c *gin.Context) (ok bool, err error) {
 	if !ok {
 		return false, nil
 	}
-	// 如果存在 或 err != nil
-	ok, err = NameAndPhoneExists(c, &user, cached.User.ID)
-	if ok || err != nil {
-		return ok, err
+	// 判断名称是否存在
+	exists, err := NameExists(c, &user, cached.User.ID)
+	if err != nil {
+		return false, err
+	}
+	if exists {
+		c.JSON(http.StatusBadRequest, utils.BadRequest("name has exists", ""))
+		return false, nil
+	}
+	// 判断手机号是否存在
+	exists, err = PhoneExists(c, &user, cached.User.ID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, utils.BadRequest(err.Error(), ""))
+		return false, err
+	}
+	if exists {
+		c.JSON(http.StatusBadRequest, utils.BadRequest("phone has exists", ""))
+		return false, nil
 	}
 	user.ID = cached.User.ID
 	//
@@ -174,14 +201,32 @@ func UpdateUser(c *gin.Context) (ok bool, err error) {
 }
 
 // Logout 退出登录
-func Logout() {
+func Logout(c *gin.Context) {
 	// 直接清除
 	// 数据清除
 	// 退出成功
-	c.JSON(http.StatusOK, utils.Success("logout success", outUser))
+	c.JSON(http.StatusOK, utils.Success("logout success", ""))
 }
 
-// GetUserByID 获取用户信息
-func GetUserByID(userID uint) bool {
-	return true
+// ListUserByPage 用户列表分页
+func ListUserByPage(c *gin.Context) {
+	//
+	var page dao.Page
+	c.BindQuery(&page)
+	//
+	list, total := services.GetListUserByPage(page.Page, page.PageSize)
+	listPage := &dao.ListPage{
+		Total: total,
+		List:  list,
+	}
+
+	c.JSON(http.StatusOK, utils.Success("get success", listPage))
+	return
+}
+
+// ListUser 用户列表 不分页
+func ListUser(c *gin.Context) {
+	list := services.GetList()
+	c.JSON(http.StatusOK, utils.Success("get list success", list))
+	return
 }

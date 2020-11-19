@@ -2,8 +2,10 @@ package middlewares
 
 import (
 	"linqiurong2021/gin-book-frontend/cached"
+	"linqiurong2021/gin-book-frontend/dao"
 	"linqiurong2021/gin-book-frontend/myjwt"
 	"linqiurong2021/gin-book-frontend/utils"
+	"linqiurong2021/gin-book-frontend/validator"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -42,5 +44,21 @@ func JWTTokenCheck() gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, myCliams)
 			c.Abort()
 		}
+	}
+}
+
+// Page 分页
+func Page() gin.HandlerFunc {
+	// 判断是否存在用户
+	return func(c *gin.Context) {
+		var page dao.Page
+		err := c.BindQuery(&page)
+		// 参数校验判断
+		ok := validator.Validate(c, err)
+		if !ok {
+			c.Abort()
+			return
+		}
+		c.Next()
 	}
 }
