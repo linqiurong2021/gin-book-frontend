@@ -62,3 +62,19 @@ func Page() gin.HandlerFunc {
 		c.Next()
 	}
 }
+
+// ID 删除
+func ID() gin.HandlerFunc {
+	// 判断是否存在用户
+	return func(c *gin.Context) {
+		var id dao.ID
+		err := c.BindUri(&id)
+		// 参数校验判断
+		ok := validator.Validate(c, err)
+		if !ok {
+			c.Abort()
+			return
+		}
+		c.Next()
+	}
+}

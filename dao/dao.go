@@ -13,6 +13,11 @@ type Page struct {
 	PageSize int `form:"page_size" binding:"required,numeric,gte=10" label:"条数"` // 大于 10 GET 需要用formtag
 }
 
+// ID 删除操作与编辑操作
+type ID struct {
+	ID int `uri:"id" json:"id" binding:"required,numeric,gte=1" label:"ID"`
+}
+
 // ListPage 分页返回数据格式
 type ListPage struct {
 	Total int64       `json:"total"`

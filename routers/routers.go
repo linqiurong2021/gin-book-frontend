@@ -67,20 +67,28 @@ func userGroup(g *gin.RouterGroup) {
 	// 中间件
 	user := g.Group("/user").Use(middlewares.JWTTokenCheck())
 	{
-		user.PUT("", controller.UpdateUser)
+		// 修改
+		user.PUT("", middlewares.ID(), controller.UpdateUser)
 		// user.DELETE("", controller.Delete)
 		// 分页校验 middlewares.Page()
 		user.GET("", middlewares.Page(), controller.ListUserByPage)
-
+		// 无分页列表
 		user.GET("/list", controller.ListUser)
 	}
 }
 
 // BookGroup Book路由
 func bookGroup(g *gin.RouterGroup) {
-	g.Group("/book")
+	book := g.Group("/book")
 	{
-
+		// 新增
+		book.POST("", controller.CreateBook)
+		// 修改
+		book.PUT("", controller.UpdateBook)
+		// 删除
+		book.DELETE("/:id", middlewares.ID(), controller.DeleteBook)
+		// 分页校验 middlewares.Page()
+		book.GET("", middlewares.Page(), controller.ListBookByPage)
 	}
 }
 

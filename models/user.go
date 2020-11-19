@@ -95,14 +95,22 @@ func GetUserByFieldValue(field string, value string) (outUser *User, err error) 
 }
 
 // GetListUserByPage 获取列表 分页
-func GetListUserByPage(page int, pageSize int) (userList []*User, count int64) {
-	mysql.DB.Debug().Offset((page - 1) * pageSize).Limit(pageSize).Find(&userList)
-	mysql.DB.Debug().Find(&User{}).Count(&count)
-	return
+func GetListUserByPage(page int, pageSize int) (userList []*User, count int64, err error) {
+	if err := mysql.DB.Debug().Offset((page - 1) * pageSize).Limit(pageSize).Find(&userList).Error; err != nil {
+		return nil, 0, err
+	}
+	if err := mysql.DB.Debug().Find(&User{}).Count(&count).Error; err != nil {
+		return nil, 0, err
+	}
+
+	return userList, count, nil
 }
 
 // GetListUser 获取列表 不分页
-func GetListUser() (userList []*User) {
-	mysql.DB.Debug().Find(&userList)
-	return
+func GetListUser() (userList []*User, err error) {
+	if err := mysql.DB.Debug().Find(&userList).Error; err != nil {
+		return nil, err
+	}
+
+	return userList, nil
 }

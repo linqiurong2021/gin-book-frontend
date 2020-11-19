@@ -47,14 +47,14 @@ func DeleteUserByID(userID int) (user *models.User, err error) {
 }
 
 // GetListUserByPage 通过ID删除用户
-func GetListUserByPage(page int, pageSize int) (userList []*models.User, count int64) {
-	userList, count = models.GetListUserByPage(page, pageSize)
+func GetListUserByPage(page int, pageSize int) (userList []*models.User, count int64, err error) {
+	userList, count, err = models.GetListUserByPage(page, pageSize)
 	return
 }
 
 // GetList 通过ID删除用户
-func GetList() (userList []*models.User) {
+func GetList() (userList []*models.User, err error) {
 
-	userList = models.GetListUser()
+	userList, err = models.GetListUser()
 	return
 }

@@ -214,7 +214,11 @@ func ListUserByPage(c *gin.Context) {
 	var page dao.Page
 	c.BindQuery(&page)
 	//
-	list, total := services.GetListUserByPage(page.Page, page.PageSize)
+	list, total, err := services.GetListUserByPage(page.Page, page.PageSize)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, utils.BadRequest(err.Error(), ""))
+		return
+	}
 	listPage := &dao.ListPage{
 		Total: total,
 		List:  list,
@@ -226,7 +230,11 @@ func ListUserByPage(c *gin.Context) {
 
 // ListUser 用户列表 不分页
 func ListUser(c *gin.Context) {
-	list := services.GetList()
+	list, err := services.GetList()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, utils.BadRequest(err.Error(), list))
+		return
+	}
 	c.JSON(http.StatusOK, utils.Success("get list success", list))
 	return
 }
