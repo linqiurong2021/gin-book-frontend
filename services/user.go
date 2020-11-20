@@ -52,8 +52,8 @@ func GetListUserByPage(page int, pageSize int) (userList []*models.User, count i
 	return
 }
 
-// GetList 通过ID删除用户
-func GetList() (userList []*models.User, err error) {
+// GetListUser 通过ID删除用户
+func GetListUser() (userList []*models.User, err error) {
 
 	userList, err = models.GetListUser()
 	return

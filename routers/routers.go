@@ -56,10 +56,12 @@ func noAuthGroup(version *gin.RouterGroup) {
 
 // authGroup 需要登录校验
 func authGroup(version *gin.RouterGroup) {
+	authGroup := version.Group("")
+	authGroup.Use(middlewares.JWTTokenCheck())
 	// 用户
-	userGroup(version)
+	userGroup(authGroup)
 	// 购物车
-	cartGroup(version)
+	cartGroup(authGroup)
 }
 
 // UserGroup User路由
@@ -94,8 +96,15 @@ func bookGroup(g *gin.RouterGroup) {
 
 // CartGroup 用户路由
 func cartGroup(g *gin.RouterGroup) {
-	g.Group("/cart")
+	cart := g.Group("/cart")
 	{
-
+		// 新增
+		cart.POST("", controller.AddToCart)
+		// 修改
+		cart.PUT("", controller.UpdateCartItem)
+		// 删除
+		cart.DELETE("/:id", middlewares.ID(), controller.DeleteCartItem)
+		// 分页校验 middlewares.Page()
+		cart.GET("", middlewares.Page(), controller.ListCartItemByPage)
 	}
 }

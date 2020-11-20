@@ -230,7 +230,7 @@ func ListUserByPage(c *gin.Context) {
 
 // ListUser 用户列表 不分页
 func ListUser(c *gin.Context) {
-	list, err := services.GetList()
+	list, err := services.GetListUser()
 	if err != nil {
 		c.JSON(http.StatusBadRequest, utils.BadRequest(err.Error(), list))
 		return
