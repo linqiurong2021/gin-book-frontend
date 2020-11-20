@@ -18,6 +18,11 @@ type ID struct {
 	ID int `uri:"id" json:"id" binding:"required,numeric,gte=1" label:"ID"`
 }
 
+// IDs 多删除操作
+type IDs struct {
+	IDs []int `uri:"ids" json:"ids" binding:"required,array" label:"IDs"`
+}
+
 // ListPage 分页返回数据格式
 type ListPage struct {
 	Total int64       `json:"total"`

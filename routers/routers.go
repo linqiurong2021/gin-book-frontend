@@ -101,9 +101,14 @@ func cartGroup(g *gin.RouterGroup) {
 		// 新增
 		cart.POST("", controller.AddToCart)
 		// 修改
-		cart.PUT("", controller.UpdateCartItem)
+		cart.PUT("/increase", controller.Increase)
+		// 修改
+		cart.PUT("/decrease", controller.Decrease)
+		// 删除
+		cart.DELETE("", controller.DeleteCartItems)
 		// 删除
 		cart.DELETE("/:id", middlewares.ID(), controller.DeleteCartItem)
+
 		// 分页校验 middlewares.Page()
 		cart.GET("", middlewares.Page(), controller.ListCartItemByPage)
 	}

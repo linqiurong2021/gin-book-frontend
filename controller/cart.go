@@ -20,9 +20,21 @@ func AddToCart(c *gin.Context) {
 	}
 }
 
-// UpdateCartItem 更新
-func UpdateCartItem(c *gin.Context) {
-	ok, err := logic.UpdateCartItem(c)
+// Increase 添加数量
+func Increase(c *gin.Context) {
+	ok, err := logic.Increase(c)
+	if !ok {
+		if err != nil {
+			c.JSON(http.StatusBadRequest, utils.BadRequest(err.Error(), ""))
+			return
+		}
+		return
+	}
+}
+
+// Decrease 减少数量
+func Decrease(c *gin.Context) {
+	ok, err := logic.Decrease(c)
 	if !ok {
 		if err != nil {
 			c.JSON(http.StatusBadRequest, utils.BadRequest(err.Error(), ""))

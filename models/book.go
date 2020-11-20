@@ -16,20 +16,21 @@ type Book struct {
 }
 
 // CreateBook 创建书
-func CreateBook(inBook *Book) (Book *Book, err error) {
+func CreateBook(inBook *Book) (book *Book, err error) {
 	if err := mysql.DB.Create(&inBook).Error; err != nil {
 		return nil, err
 	}
-	Book = inBook
+	book = inBook
 	return
 }
 
 // GetBookByID 通过ID获取书籍信息
-func GetBookByID(bookID uint) (Book *Book, err error) {
-	if err := mysql.DB.Where("id = ?", bookID).Find(&Book).Error; err != nil {
+func GetBookByID(bookID uint) (outBook *Book, err error) {
+	var book = new(Book)
+	if err := mysql.DB.Where("id = ?", bookID).First(&book).Error; err != nil {
 		return nil, err
 	}
-	return
+	return book, nil
 }
 
 // UpdateBook 更新数据

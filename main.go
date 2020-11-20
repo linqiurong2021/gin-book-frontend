@@ -26,7 +26,7 @@ func main() {
 			fmt.Printf("load config from file falure !, err:%v\n", err)
 			return
 		}
-		fmt.Printf("#### load config from config/config.ini ! ####")
+		fmt.Printf("\n\n#### load config from config/config.ini ! ####\n\n")
 	}
 
 	if err := mysql.InitMySQL(config.Conf.MySQLConfig); err != nil {

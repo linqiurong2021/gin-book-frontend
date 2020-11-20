@@ -17,7 +17,7 @@ type User struct {
 	Cart     *Cart  `json:"cart"`
 }
 
-// Create 创建用户
+// CreateUser 创建用户
 func CreateUser(inUser *User) (user *User, err error) {
 	if err := mysql.DB.Create(&inUser).Error; err != nil {
 		return nil, err
