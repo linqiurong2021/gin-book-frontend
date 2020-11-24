@@ -47,6 +47,11 @@ func Unauthorized(msg string, data interface{}) Response {
 	return NewResponse(http.StatusUnauthorized, msg, data)
 }
 
+// ServerError 系统内部错误
+func ServerError(msg string, data interface{}) Response {
+	return NewResponse(http.StatusInternalServerError, msg, data)
+}
+
 // ValidateFailure 校验
 func ValidateFailure(data interface{}) Response {
 	return NewResponse(http.StatusBadRequest, "validate failure! please see the field data for details.", data)

@@ -7,6 +7,11 @@ type Login struct {
 	Code     string `json:"code" binding:"required,len=6"  label:"验证码"`
 }
 
+// ToUserInfo 返回的结构体
+type ToUserInfo struct {
+	UserName string `json:"user_name"`
+}
+
 // Page 分页
 type Page struct {
 	Page     int `form:"page" binding:"required,numeric,gte=1" label:"页码"`       // 大于1 GET 需要用formtag

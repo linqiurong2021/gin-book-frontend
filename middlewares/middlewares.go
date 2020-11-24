@@ -39,10 +39,12 @@ func JWTTokenCheck() gin.HandlerFunc {
 		if ok && jwtToken.Valid {
 			// 存储当前用户信息
 			cached.Save(myCliams)
+			// 可以存储到 c.Set("user",user)
 			c.Next()
 		} else {
 			c.JSON(http.StatusBadRequest, myCliams)
 			c.Abort()
+			return
 		}
 	}
 }

@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"linqiurong2021/gin-book-frontend/config"
-	"linqiurong2021/gin-book-frontend/dao"
 	"linqiurong2021/gin-book-frontend/models"
 	"linqiurong2021/gin-book-frontend/mysql"
 	"linqiurong2021/gin-book-frontend/routers"
@@ -87,7 +86,7 @@ func TestV1UserCreate(t *testing.T) {
 
 	response := httptest.NewRecorder()
 	// 添加参数
-	var data = new(dao.UserCreate)
+	var data = new(models.User)
 	data.Name = "17605048999"
 	data.Password = "123456"
 	data.Phone = "17605048999"
