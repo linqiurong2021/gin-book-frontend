@@ -62,6 +62,8 @@ func authGroup(version *gin.RouterGroup) {
 	userGroup(authGroup)
 	// 购物车
 	cartGroup(authGroup)
+	// 订单
+	orderGroup(authGroup)
 }
 
 // UserGroup User路由
@@ -101,9 +103,9 @@ func cartGroup(g *gin.RouterGroup) {
 		// 新增
 		cart.POST("", controller.AddToCart)
 		// 修改
-		cart.PUT("/increase", controller.Increase)
+		cart.PUT("/increase", controller.CartIncrease)
 		// 修改
-		cart.PUT("/decrease", controller.Decrease)
+		cart.PUT("/decrease", controller.CartDecrease)
 		// 删除
 		cart.DELETE("", controller.DeleteCartItems)
 		// 删除
@@ -111,5 +113,22 @@ func cartGroup(g *gin.RouterGroup) {
 
 		// 分页校验 middlewares.Page()
 		cart.GET("", middlewares.Page(), controller.ListCartItemByPage)
+	}
+}
+
+// orderGroup 订单路由
+func orderGroup(g *gin.RouterGroup) {
+	cart := g.Group("/order")
+	{
+		// 新增
+		cart.POST("", controller.CreateOrder)
+		// 修改
+		cart.PUT("/increase", controller.OrderIncrease)
+		// 修改
+		cart.PUT("/decrease", controller.OrderDecrease)
+		// 删除
+		cart.DELETE("", controller.DeleteCartItems)
+		// 分页校验 middlewares.Page()
+		cart.GET("", middlewares.Page(), controller.ListOrderByPage)
 	}
 }

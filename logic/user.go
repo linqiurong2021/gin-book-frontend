@@ -1,7 +1,6 @@
 package logic
 
 import (
-	"fmt"
 	"linqiurong2021/gin-book-frontend/cached"
 	"linqiurong2021/gin-book-frontend/dao"
 	"linqiurong2021/gin-book-frontend/models"
@@ -58,12 +57,13 @@ func JWTToken(user *models.User) (string, error) {
 // NameExists 校验用户名是否存在
 func NameExists(c *gin.Context, user *models.User, ID uint) (exists bool, err error) {
 	// 判断名称是否已存在
-	outUser, err := services.GetUserByName(user.Name)
-	if err != nil {
-		return false, err
-	}
+	outUser, rowsAffected, err := services.GetUserByName(user.Name)
 
-	fmt.Sprintf("%#v\n", outUser)
+	if err != nil {
+		if rowsAffected != 0 {
+			return false, err
+		}
+	}
 	//
 	if outUser != nil {
 		//
@@ -78,11 +78,17 @@ func NameExists(c *gin.Context, user *models.User, ID uint) (exists bool, err er
 // PhoneExists 校验手机号是否存在
 func PhoneExists(c *gin.Context, user *models.User, ID uint) (exists bool, err error) {
 	// 判断手机号是否已存在
-	outUser, err := services.GetUserByPhone(user.Phone)
+	outUser, rowsAffected, err := services.GetUserByPhone(user.Phone)
+	// rowAffected = 0 说明是 查无数据
 	if err != nil {
-		return false, err
+		if rowsAffected != 0 {
+			return false, err
+		}
 	}
+	//
+	// 如果有传ID 则判断是不是当前自已
 	if outUser != nil {
+		// 如果为当前自已则返回
 		if outUser.ID == ID {
 			return false, nil
 		}
@@ -117,11 +123,16 @@ func CreateUser(c *gin.Context) (ok bool, err error) {
 	}
 	if exists {
 		c.JSON(http.StatusBadRequest, utils.BadRequest("phone has exists", ""))
+		return
 	}
 	//
 	// 密码加密
 	user.Password = MD5Encrypt(user.Password)
-	// 新增
+	// 默认添加购物车数据
+	user.Cart = &models.Cart{
+		TotalAmount: 0,
+		TotalCount:  0,
+	}
 	outUser, err := services.CreateUser(&user)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, utils.BadRequest(err.Error(), ""))

@@ -33,7 +33,7 @@ func CreateCartItem(c *gin.Context) (ok bool, err error) {
 			c.JSON(http.StatusBadRequest, utils.BadRequest(err.Error(), ""))
 			return
 		}
-		// 创建购物车
+		// 如果没有购物车则 创建购物车
 		cart, err = services.CreateCart(&models.Cart{UserID: cached.User.ID, TotalCount: 0, TotalAmount: 0})
 		if err != nil {
 			c.JSON(http.StatusBadRequest, utils.BadRequest(err.Error(), ""))
@@ -91,8 +91,8 @@ func CreateCartItem(c *gin.Context) (ok bool, err error) {
 	return true, nil
 }
 
-// Increase 添加数量
-func Increase(c *gin.Context) (ok bool, err error) {
+// CartIncrease 添加数量
+func CartIncrease(c *gin.Context) (ok bool, err error) {
 	var newCartItem models.CartItem
 	c.BindJSON(&newCartItem)
 	// 参数校验判断
@@ -135,8 +135,8 @@ func Increase(c *gin.Context) (ok bool, err error) {
 	return true, nil
 }
 
-// Decrease 减少数量
-func Decrease(c *gin.Context) (ok bool, err error) {
+// CartDecrease 减少数量
+func CartDecrease(c *gin.Context) (ok bool, err error) {
 	var newCartItem models.CartItem
 	c.BindJSON(&newCartItem)
 	// 参数校验判断

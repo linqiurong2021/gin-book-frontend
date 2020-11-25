@@ -33,6 +33,14 @@ func GetBookByID(bookID uint) (outBook *Book, err error) {
 	return book, nil
 }
 
+// GetBookListByIDs 通过ID获取书籍信息
+func GetBookListByIDs(bookIDs []uint) (outBookList []*Book, err error) {
+	if err := mysql.DB.Where("id in ?", bookIDs).Find(&outBookList).Error; err != nil {
+		return nil, err
+	}
+	return outBookList, nil
+}
+
 // UpdateBook 更新数据
 func UpdateBook(info *Book) (outBook *Book, err error) {
 	if err := mysql.DB.Debug().Where("id = ?", info.ID).Save(info).Error; err != nil {

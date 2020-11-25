@@ -15,17 +15,17 @@ func GetUserByID(userID uint) (user *models.User, err error) {
 }
 
 // GetUserByPhone 通过手机号获取用户信息
-func GetUserByPhone(phone string) (user *models.User, err error) {
+func GetUserByPhone(phone string) (user *models.User, rowsAffected int64, err error) {
 	return models.GetUserByPhone(phone)
 }
 
 // GetUserByName 通过名称获取用户信息
-func GetUserByName(name string) (user *models.User, err error) {
+func GetUserByName(name string) (user *models.User, rowsAffected int64, err error) {
 	return models.GetUserByName(name)
 }
 
 // GetUserByFieldValue 通过名称获取用户信息
-func GetUserByFieldValue(field string, value string) (user *models.User, err error) {
+func GetUserByFieldValue(field string, value string) (user *models.User, rowsAffected int64, err error) {
 	return models.GetUserByFieldValue(field, value)
 }
 

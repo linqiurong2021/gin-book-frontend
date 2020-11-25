@@ -33,3 +33,14 @@ type ListPage struct {
 	Total int64       `json:"total"`
 	List  interface{} `json:"list"`
 }
+
+// OrderItem 订单项
+type OrderItem struct {
+	BookID uint `json:"book_id" binding:"required" label:"ID"`
+	Number uint `json:"number" binding:"required,gt=0" label:"数量"`
+}
+
+// OrderItems 多个订单项
+type OrderItems struct {
+	OrderItem []*OrderItem `json:"order_items" label:"订单项"`
+}

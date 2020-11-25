@@ -14,9 +14,9 @@ require (
 	github.com/smartystreets/assertions v1.2.0 // indirect
 	github.com/smartystreets/goconvey v1.6.4 // indirect
 	golang.org/x/crypto v0.0.0-20201117144127-c1f2f97bffc9 // indirect
-	golang.org/x/sys v0.0.0-20201117222635-ba5294a509c7 // indirect
+	golang.org/x/sys v0.0.0-20201119102817-f84b799fce68 // indirect
 	gopkg.in/ini.v1 v1.62.0
 	gorm.io/driver/mysql v1.0.3
-	gorm.io/gorm v1.20.6
+	gorm.io/gorm v1.20.7
 
 )

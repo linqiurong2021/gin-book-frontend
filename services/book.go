@@ -14,6 +14,11 @@ func GetBookByID(bookID uint) (book *models.Book, err error) {
 	return models.GetBookByID(bookID)
 }
 
+// GetBookListByIDs 通过书籍ID获取
+func GetBookListByIDs(bookIDs []uint) (books []*models.Book, err error) {
+	return models.GetBookListByIDs(bookIDs)
+}
+
 // UpdateBook 更新数据
 func UpdateBook(info *models.Book) (book *models.Book, err error) {
 

@@ -19,6 +19,7 @@ type User struct {
 
 // CreateUser 创建用户
 func CreateUser(inUser *User) (user *User, err error) {
+
 	if err := mysql.DB.Create(&inUser).Error; err != nil {
 		return nil, err
 	}
@@ -67,31 +68,31 @@ func DeleteUserByID(userID int) (user *User, err error) {
 }
 
 // GetUserByPhone 通过某个字段获取用户信息
-func GetUserByPhone(value string) (outUser *User, err error) {
+func GetUserByPhone(value string) (outUser *User, rowsAffected int64, err error) {
 	return GetUserByFieldValue("phone", value)
 }
 
 // GetUserByName 通过某个字段获取用户信息
-func GetUserByName(value string) (outUser *User, err error) {
+func GetUserByName(value string) (outUser *User, rowsAffected int64, err error) {
 	return GetUserByFieldValue("name", value)
 }
 
 // GetUserByFieldValue 通过某个字段获取用户信息
-func GetUserByFieldValue(field string, value string) (outUser *User, err error) {
+func GetUserByFieldValue(field string, value string) (outUser *User, rowsAffected int64, err error) {
 	var user = new(User)
 	var where string = fmt.Sprintf("%s = ?", field)
-
+	//
 	record := mysql.DB.Debug().Where(where, value).First(&user)
 	// 查不到数据
-	if errors.Is(record.Error, gorm.ErrRecordNotFound) || record.RowsAffected == 0 {
-		return nil, nil
+	if errors.Is(record.Error, gorm.ErrRecordNotFound) {
+		return nil, 0, record.Error
 	}
 	// 异常
 	if record.Error != nil {
-		return nil, record.Error
+		return nil, 1, record.Error
 	}
 
-	return user, nil
+	return user, 1, nil
 }
 
 // GetListUserByPage 获取列表 分页
