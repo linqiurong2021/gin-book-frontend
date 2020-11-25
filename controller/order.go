@@ -20,21 +20,9 @@ func CreateOrder(c *gin.Context) {
 	}
 }
 
-// OrderIncrease 添加数量
-func OrderIncrease(c *gin.Context) {
-	ok, err := logic.OrderIncrease(c)
-	if !ok {
-		if err != nil {
-			c.JSON(http.StatusBadRequest, utils.BadRequest(err.Error(), ""))
-			return
-		}
-		return
-	}
-}
-
-// OrderDecrease 减少数量
-func OrderDecrease(c *gin.Context) {
-	ok, err := logic.OrderDecrease(c)
+// OrderStatus 修改状态
+func OrderStatus(c *gin.Context) {
+	ok, err := logic.OrderStatus(c)
 	if !ok {
 		if err != nil {
 			c.JSON(http.StatusBadRequest, utils.BadRequest(err.Error(), ""))

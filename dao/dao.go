@@ -44,3 +44,9 @@ type OrderItem struct {
 type OrderItems struct {
 	OrderItem []*OrderItem `json:"order_items" label:"订单项"`
 }
+
+// OrderStatus 订单状态
+type OrderStatus struct {
+	OrderID uint   `json:"order_id" binding:"required" label:"订单状态"`
+	Status  string `json:"status" binding:"required,oneof='create' 'paid' 'cancel' 'refund' 'refunded'" label:"订单状态"`
+}

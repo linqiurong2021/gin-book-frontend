@@ -2,7 +2,7 @@ package logic
 
 import (
 	"linqiurong2021/gin-book-frontend/cached"
-	"linqiurong2021/gin-book-frontend/const/order"
+	"linqiurong2021/gin-book-frontend/consts/order"
 	"linqiurong2021/gin-book-frontend/dao"
 	"linqiurong2021/gin-book-frontend/models"
 	"linqiurong2021/gin-book-frontend/services"
@@ -66,7 +66,7 @@ func CreateOrder(c *gin.Context) (ok bool, err error) {
 	// orderInfo.TotalAmount = totalPrice
 	var orderInfo = &models.Order{
 		UserID:      cached.User.ID,
-		State:       order.Init,
+		State:       services.GetOrderStatusByString(order.Create),
 		OrderItem:   orderItem,
 		TotalAmount: totalPrice,
 		TotalCount:  totalNumber,
@@ -89,42 +89,6 @@ func getBooksByIDs(bookIDs []uint) (bookList []*models.Book, err error) {
 	return
 }
 
-// OrderIncrease 创建订单
-func OrderIncrease(c *gin.Context) (ok bool, err error) {
-
-	var order models.Order
-	order.UserID = cached.User.ID
-	err = c.ShouldBindJSON(&order) // 绑定并校验
-	//
-	// 参数校验判断
-	ok = validator.Validate(c, err)
-	if !ok {
-		return false, nil
-	}
-
-	// order.OrderItem = []
-
-	return true, nil
-}
-
-// OrderDecrease 创建订单
-func OrderDecrease(c *gin.Context) (ok bool, err error) {
-
-	var order models.Order
-	order.UserID = cached.User.ID
-	err = c.ShouldBindJSON(&order) // 绑定并校验
-	//
-	// 参数校验判断
-	ok = validator.Validate(c, err)
-	if !ok {
-		return false, nil
-	}
-
-	// order.OrderItem = []
-
-	return true, nil
-}
-
 // ListOrderByPageAndUserID 创建订单
 func ListOrderByPageAndUserID(c *gin.Context) {
 
@@ -144,4 +108,34 @@ func ListOrderByPageAndUserID(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, utils.Success("get success", listPage))
 	return
+}
+
+// OrderStatus 订单状态
+func OrderStatus(c *gin.Context) (ok bool, err error) {
+	//
+	var orderStatus dao.OrderStatus
+	//
+	err = c.ShouldBindJSON(&orderStatus) // 绑定并校验
+	// 参数校验判断
+	ok = validator.Validate(c, err)
+	if !ok {
+		return false, nil
+	}
+	// 获取当前状态ID
+	order, err := services.GetOrderByUserIDAndID(cached.User.ID, orderStatus.OrderID)
+	if err != nil {
+		return false, err
+	}
+	orderState := services.GetOrderStatusByString(orderStatus.Status)
+	if orderState <= order.State {
+		c.JSON(http.StatusBadRequest, utils.BadRequest("order status can not rollback", ""))
+		return
+	}
+
+	ok, err = services.UpdateOrderByIDAndState(orderStatus.OrderID, orderState)
+	if err != nil {
+		return false, err
+	}
+	c.JSON(http.StatusOK, utils.Success("update status success", ""))
+	return ok, nil
 }

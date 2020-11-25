@@ -46,10 +46,33 @@ func UpdateOrder(inOrder *Order) (outOrder *Order, err error) {
 
 // GetOrderByID 通过ID获取用户信息
 func GetOrderByID(orderID uint) (outOrder *Order, err error) {
-	if err := mysql.DB.Where("id = ?", orderID).Find(&outOrder).Error; err != nil {
+	var order = new(Order)
+	if err := mysql.DB.Where("id = ?", orderID).First(&order).Error; err != nil {
 		return nil, err
 	}
+	outOrder = order
+
 	return
+}
+
+// GetOrderByUserIDAndID 通过ID获取用户订单信息
+func GetOrderByUserIDAndID(userID uint, orderID uint) (outOrder *Order, err error) {
+	var order = new(Order)
+	if err := mysql.DB.Where("user_id = ?", userID).Where("id = ?", orderID).First(&order).Error; err != nil {
+		return nil, err
+	}
+	outOrder = order
+
+	return
+}
+
+// UpdateOrderByIDAndState 更新状态
+func UpdateOrderByIDAndState(orderID uint, status uint) (ok bool, err error) {
+
+	if err := mysql.DB.Model(&Order{}).Debug().Where("id = ?", orderID).UpdateColumn("state", status).Error; err != nil {
+		return false, err
+	}
+	return true, nil
 }
 
 // DeleteOrderByID 通过ID删除用户

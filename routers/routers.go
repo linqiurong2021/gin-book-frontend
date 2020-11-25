@@ -123,9 +123,7 @@ func orderGroup(g *gin.RouterGroup) {
 		// 新增
 		cart.POST("", controller.CreateOrder)
 		// 修改
-		cart.PUT("/increase", controller.OrderIncrease)
-		// 修改
-		cart.PUT("/decrease", controller.OrderDecrease)
+		cart.PUT("/status", controller.OrderStatus)
 		// 删除
 		cart.DELETE("", controller.DeleteCartItems)
 		// 分页校验 middlewares.Page()
