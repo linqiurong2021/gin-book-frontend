@@ -25,7 +25,7 @@ func DeleteOrderByID(OrderID int) (Order *models.Order, err error) {
 }
 
 // GetListOrderByPageAndUserID 通过ID删除订单
-func GetListOrderByPageAndUserID(userID int64, page int, pageSize int) (OrderList []*models.Order, count int64, err error) {
+func GetListOrderByPageAndUserID(userID uint, page int, pageSize int) (OrderList []*models.Order, count int64, err error) {
 	OrderList, count, err = models.GetListOrderByPageAndUserID(userID, page, pageSize)
 	return
 }

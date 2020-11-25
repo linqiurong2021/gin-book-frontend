@@ -9,11 +9,11 @@ import (
 // Cart 购物车
 type Cart struct {
 	Common      `gorm:"embedded"`
-	UserID      uint    `json:"user_id;not null" binding:"required" label:"用户ID"`
-	TotalCount  uint    `json:"total_count" gorm:"total_count;default:0" binding:"" label:"总量"`
-	TotalAmount float32 `json:"total_amount" gorm:"total_amount;default:0" binding:"" label:"总价"`
-	User        User
-	CartItem    []CartItem
+	UserID      uint       `json:"user_id;not null" binding:"required" label:"用户ID"`
+	TotalCount  uint       `json:"total_count" gorm:"total_count;default:0" binding:"" label:"总量"`
+	TotalAmount float32    `json:"total_amount" gorm:"total_amount;default:0" binding:"" label:"总价"`
+	User        User       `json:"user"`
+	CartItem    []CartItem `json:"cart_items"`
 }
 
 // CartItem 购物车每项
@@ -23,8 +23,6 @@ type CartItem struct {
 	Amount float32 `json:"amount" gorm:"amount;type:float(9,2)" binding:"required" label:"价格"`
 	CartID uint    `json:"cart_id" gorm:"cart_id;not null" binding:"required" label:"购物车ID"`
 	BookID uint    `json:"book_id" gorm:"book_id;not null" binding:"required" label:"已知ID"`
-	Cart   Cart
-	Book   Book
 }
 
 // CreateCart 创建购物车

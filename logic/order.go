@@ -126,19 +126,22 @@ func OrderDecrease(c *gin.Context) (ok bool, err error) {
 }
 
 // ListOrderByPageAndUserID 创建订单
-func ListOrderByPageAndUserID(c *gin.Context) (ok bool, err error) {
+func ListOrderByPageAndUserID(c *gin.Context) {
 
-	var order models.Order
-	order.UserID = cached.User.ID
-	err = c.ShouldBindJSON(&order) // 绑定并校验
-	//
-	// 参数校验判断
-	ok = validator.Validate(c, err)
-	if !ok {
-		return false, nil
+	var page dao.Page
+
+	c.BindQuery(&page) // 绑定并校验
+
+	list, total, err := services.GetListOrderByPageAndUserID(cached.User.ID, page.Page, page.PageSize)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, utils.BadRequest(err.Error(), ""))
+		return
 	}
-
 	// order.OrderItem = []
-
-	return true, nil
+	listPage := &dao.ListPage{
+		Total: total,
+		List:  list,
+	}
+	c.JSON(http.StatusOK, utils.Success("get success", listPage))
+	return
 }

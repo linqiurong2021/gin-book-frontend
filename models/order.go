@@ -7,11 +7,11 @@ import "linqiurong2021/gin-book-frontend/mysql"
 // Order  订单
 type Order struct {
 	Common      `gorm:"embedded"`
-	TotalCount  uint    `json:"total_count" gorm:"total_count" binding:"required,numeric,gte=0;" label:"总量"`
-	TotalAmount float32 `json:"total_amount" gorm:"total_amount" binding:"required,numeric,gte=0;" label:"总价"`
-	State       uint    `json:"state" gorm:"state"`
-	UserID      uint    // Belongs To
-	OrderItem   []OrderItem
+	TotalCount  uint        `json:"total_count" gorm:"total_count" binding:"required,numeric,gte=0;" label:"总量"`
+	TotalAmount float32     `json:"total_amount" gorm:"total_amount" binding:"required,numeric,gte=0;" label:"总价"`
+	State       uint        `json:"state" gorm:"state"`
+	UserID      uint        `json:"user_id"` // Belongs To
+	OrderItem   []OrderItem `json:"order_items"`
 }
 
 // OrderItem 购物车每项
@@ -23,8 +23,7 @@ type OrderItem struct {
 	Author  string  `json:"auth" gorm:"auth" binding:"required"`
 	Price   float32 `json:"price" gorm:"price" binding:"required,numeric,gte=0;"`
 	ImgPath string  `json:"img_path" gorm:"img_path"`
-	OrderID string  `json:"order_id" gorm:"order_id"` // Belongs To
-	Order   Order
+	OrderID uint    `json:"order_id" gorm:"order_id"` // Belongs To
 }
 
 // CreateOrder 创建订单
@@ -62,8 +61,9 @@ func DeleteOrderByID(orderID int) (outOrder *Order, err error) {
 }
 
 // GetListOrderByPageAndUserID 通过用户ID分页
-func GetListOrderByPageAndUserID(userID int64, page int, pageSize int) (outOrderList []*Order, count int64, err error) {
-	if err := mysql.DB.Debug().Where("user_id = ?", userID).Offset((page - 1) * pageSize).Limit(pageSize).Find(&outOrderList).Error; err != nil {
+func GetListOrderByPageAndUserID(userID uint, page int, pageSize int) (outOrderList []*Order, count int64, err error) {
+	// 加载数据项
+	if err := mysql.DB.Debug().Preload("OrderItem").Where("user_id = ?", userID).Offset((page - 1) * pageSize).Limit(pageSize).Find(&outOrderList).Error; err != nil {
 		return nil, 0, err
 	}
 	if err := mysql.DB.Debug().Where("user_id = ?", userID).Find(&Order{}).Count(&count).Error; err != nil {
