@@ -40,7 +40,9 @@ func defaultRouter(r *gin.Engine) {
 	// 未匹配到路由时
 	r.NoRoute(noRoute)
 	// 心跳检测
-	r.GET("/ping", controller.Ping)
+	r.GET("/ping", func(c *gin.Context) {
+		c.JSON(http.StatusOK, utils.Success("pong", ""))
+	})
 
 }
 
@@ -90,7 +92,7 @@ func bookGroup(g *gin.RouterGroup) {
 		// 修改
 		book.PUT("", controller.UpdateBook)
 		// 删除
-		book.DELETE("/:id", middlewares.ID(), controller.DeleteBook)
+		// book.DELETE("/:id", middlewares.ID(), controller.DeleteBook)
 		// 分页校验 middlewares.Page()
 		book.GET("", middlewares.Page(), controller.ListBookByPage)
 	}
