@@ -1,9 +1,5 @@
 package cached
 
-import (
-	"linqiurong2021/gin-book-frontend/myjwt"
-)
-
 // User 存储当前登录用户信息
 var User CurrentUser
 
@@ -14,7 +10,7 @@ type CurrentUser struct {
 }
 
 // Save 存储
-func Save(token *myjwt.MyClaims) {
+func Save(token *Claims) {
 	User.ID = token.ID
 	User.Name = token.Name
 }

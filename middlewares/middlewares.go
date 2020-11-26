@@ -3,7 +3,6 @@ package middlewares
 import (
 	"linqiurong2021/gin-book-frontend/cached"
 	"linqiurong2021/gin-book-frontend/dao"
-	"linqiurong2021/gin-book-frontend/myjwt"
 	"linqiurong2021/gin-book-frontend/utils"
 	"linqiurong2021/gin-book-frontend/validator"
 	"net/http"
@@ -29,13 +28,13 @@ func JWTTokenCheck() gin.HandlerFunc {
 			c.Abort()
 			return
 		}
-		jwtToken, err := myjwt.Parse(token)
+		jwtToken, err := cached.Parse(token)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, utils.BadRequest(err.Error(), ""))
 			c.Abort()
 			return
 		}
-		myCliams, ok := myjwt.Check(jwtToken)
+		myCliams, ok := cached.Check(jwtToken)
 		if ok && jwtToken.Valid {
 			// 存储当前用户信息
 			cached.Save(myCliams)

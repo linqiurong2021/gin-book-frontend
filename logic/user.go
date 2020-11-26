@@ -4,7 +4,6 @@ import (
 	"linqiurong2021/gin-book-frontend/cached"
 	"linqiurong2021/gin-book-frontend/dao"
 	"linqiurong2021/gin-book-frontend/models"
-	"linqiurong2021/gin-book-frontend/myjwt"
 	"linqiurong2021/gin-book-frontend/services"
 	"linqiurong2021/gin-book-frontend/utils"
 	"linqiurong2021/gin-book-frontend/validator"
@@ -51,7 +50,7 @@ func Login(c *gin.Context) (string, bool) {
 // JWTToken  JSONWebToken
 func JWTToken(user *models.User) (string, error) {
 	//
-	return myjwt.Create(user)
+	return cached.Create(user)
 }
 
 // NameExists 校验用户名是否存在
