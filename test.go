@@ -54,6 +54,7 @@ func InitTrans(locale string) (err error) {
 	return
 }
 
+// SignUpParam SignUpParam
 type SignUpParam struct {
 	Age        uint8  `json:"age" binding:"gte=1,lte=130"`
 	Name       string `json:"name" binding:"required"`
@@ -62,7 +63,8 @@ type SignUpParam struct {
 	RePassword string `json:"re_password" binding:"required,eqfield=Password"`
 }
 
-func main() {
+//
+func init() {
 	if err := InitTrans("zh"); err != nil {
 		fmt.Printf("init trans failed, err:%v\n", err)
 		return
