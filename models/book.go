@@ -13,6 +13,8 @@ type Book struct {
 	Sales   uint    `json:"sales" gorm:"sales;type:int;" binding:"numeric,gte=0" label:"销售量"`
 	Stock   uint    `json:"stock" gorm:"stock;type:int;" binding:"numeric,gte=0" label:"库存量"`
 	ImgPath string  `json:"img_path" gorm:"img_path;type:varchar(255)"  label:"图片"`
+	ShopID  uint    `json:"shop_id" gorm:"shop_id" label:"店铺ID"`
+	Shop    *Shop   `json:"shop"`
 }
 
 // CreateBook 创建书
