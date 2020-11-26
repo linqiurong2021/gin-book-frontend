@@ -14,6 +14,7 @@ type Book struct {
 	Stock   uint    `json:"stock" gorm:"stock;type:int;" binding:"numeric,gte=0" label:"库存量"`
 	ImgPath string  `json:"img_path" gorm:"img_path;type:varchar(255)"  label:"图片"`
 	ShopID  uint    `json:"shop_id" gorm:"shop_id" label:"店铺ID"`
+	CateID  uint    `json:"cate_id" gorm:"cate_id" label:"分类ID"`
 	Shop    *Shop   `json:"shop"`
 }
 

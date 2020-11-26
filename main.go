@@ -41,6 +41,7 @@ func main() {
 	}
 	// 绑定数据表
 	mysql.DB.AutoMigrate(&models.Book{}, &models.User{}, &models.Cart{}, &models.CartItem{}, &models.Order{}, &models.OrderItem{})
+	mysql.DB.AutoMigrate(&models.Admin{}, &models.Shop{}, &models.Cate{}, &models.ShopUser{})
 	// 注册路由
 	routers.RegisterRouter(r)
 	r.Run(fmt.Sprintf(":%#v", config.Conf.Port))

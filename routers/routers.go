@@ -13,6 +13,8 @@ import (
 // RegisterRouter 注册路由
 func RegisterRouter(r *gin.Engine) {
 	v1 := r.Group("/v1")
+	// 跨域问题
+	v1.Use(middlewares.CROS())
 	{
 		// 需要校验的分组
 		authGroup(v1)
