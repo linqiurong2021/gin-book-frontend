@@ -38,7 +38,7 @@ func GetUserByID(userID uint) (user *User, err error) {
 // GetUserByNameAndEncryptPassword 通过用户名或密码
 func GetUserByNameAndEncryptPassword(userName string, encryptPassword string) (outUser *User, err error) {
 	var user = new(User)
-	record := mysql.DB.Debug().Where("name = ?", userName).Where("password = ?", encryptPassword).Find(&user)
+	record := mysql.DB.Where("name = ?", userName).Where("password = ?", encryptPassword).Find(&user)
 	// 为空或查找数量为0时
 	if errors.Is(record.Error, gorm.ErrRecordNotFound) || record.RowsAffected == 0 {
 		return nil, nil
@@ -52,7 +52,7 @@ func GetUserByNameAndEncryptPassword(userName string, encryptPassword string) (o
 
 // UpdateUser 更新数据
 func UpdateUser(info *User) (outUser *User, err error) {
-	if err := mysql.DB.Debug().Where("id = ?", info.ID).Save(info).Error; err != nil {
+	if err := mysql.DB.Where("id = ?", info.ID).Save(info).Error; err != nil {
 		return nil, err
 	}
 	outUser = info
@@ -61,7 +61,7 @@ func UpdateUser(info *User) (outUser *User, err error) {
 
 // DeleteUserByID 通过ID删除用户
 func DeleteUserByID(userID int) (user *User, err error) {
-	if err := mysql.DB.Debug().Where("id = ?", userID).Delete(&User{}).Error; err != nil {
+	if err := mysql.DB.Where("id = ?", userID).Delete(&User{}).Error; err != nil {
 		return nil, err
 	}
 	return
@@ -82,7 +82,7 @@ func GetUserByFieldValue(field string, value string) (outUser *User, rowsAffecte
 	var user = new(User)
 	var where string = fmt.Sprintf("%s = ?", field)
 	//
-	record := mysql.DB.Debug().Where(where, value).First(&user)
+	record := mysql.DB.Where(where, value).First(&user)
 	// 查不到数据
 	if errors.Is(record.Error, gorm.ErrRecordNotFound) {
 		return nil, 0, record.Error
@@ -97,10 +97,10 @@ func GetUserByFieldValue(field string, value string) (outUser *User, rowsAffecte
 
 // GetListUserByPage 获取列表 分页 (暂用不到)
 func GetListUserByPage(page int, pageSize int) (userList []*User, count int64, err error) {
-	if err := mysql.DB.Debug().Offset((page - 1) * pageSize).Limit(pageSize).Find(&userList).Error; err != nil {
+	if err := mysql.DB.Offset((page - 1) * pageSize).Limit(pageSize).Find(&userList).Error; err != nil {
 		return nil, 0, err
 	}
-	if err := mysql.DB.Debug().Find(&User{}).Count(&count).Error; err != nil {
+	if err := mysql.DB.Find(&User{}).Count(&count).Error; err != nil {
 		return nil, 0, err
 	}
 
@@ -109,7 +109,7 @@ func GetListUserByPage(page int, pageSize int) (userList []*User, count int64, e
 
 // GetListUser 获取列表 不分页  (暂用不到)
 func GetListUser() (userList []*User, err error) {
-	if err := mysql.DB.Debug().Find(&userList).Error; err != nil {
+	if err := mysql.DB.Find(&userList).Error; err != nil {
 		return nil, err
 	}
 

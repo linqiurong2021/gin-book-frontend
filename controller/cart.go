@@ -32,7 +32,7 @@ func CartIncrease(c *gin.Context) {
 	}
 }
 
-// Decrease 减少数量
+// CartDecrease 减少数量
 func CartDecrease(c *gin.Context) {
 	ok, err := logic.CartDecrease(c)
 	if !ok {

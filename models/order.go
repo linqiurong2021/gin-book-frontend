@@ -49,7 +49,7 @@ func GetOrderByUserIDAndID(userID uint, orderID uint) (outOrder *Order, err erro
 // UpdateOrderByIDAndState 更新状态
 func UpdateOrderByIDAndState(userID uint, orderID uint, status uint) (ok bool, err error) {
 
-	if err := mysql.DB.Debug().Model(&Order{}).Where("user_id = ?", userID).Where("id = ?", orderID).UpdateColumn("state", status).Error; err != nil {
+	if err := mysql.DB.Model(&Order{}).Where("user_id = ?", userID).Where("id = ?", orderID).UpdateColumn("state", status).Error; err != nil {
 		return false, err
 	}
 	return true, nil
@@ -57,7 +57,7 @@ func UpdateOrderByIDAndState(userID uint, orderID uint, status uint) (ok bool, e
 
 // DeleteOrderByID 通过ID删除订单
 func DeleteOrderByID(userID uint, orderID int) (outOrder *Order, err error) {
-	if err := mysql.DB.Debug().Where("user_id = ?", userID).Where("id = ?", orderID).Delete(&Order{}).Error; err != nil {
+	if err := mysql.DB.Where("user_id = ?", userID).Where("id = ?", orderID).Delete(&Order{}).Error; err != nil {
 		return nil, err
 	}
 	return
@@ -65,7 +65,7 @@ func DeleteOrderByID(userID uint, orderID int) (outOrder *Order, err error) {
 
 // DeleteOrderByIDs 通过ID删除订单
 func DeleteOrderByIDs(userID uint, orderID []int) (outOrder *Order, err error) {
-	if err := mysql.DB.Debug().Where("user_id = ?", userID).Where("id in ?", orderID).Delete(&Order{}).Error; err != nil {
+	if err := mysql.DB.Where("user_id = ?", userID).Where("id in ?", orderID).Delete(&Order{}).Error; err != nil {
 		return nil, err
 	}
 	return
@@ -74,10 +74,10 @@ func DeleteOrderByIDs(userID uint, orderID []int) (outOrder *Order, err error) {
 // GetListOrderByPageAndUserID 通过订单ID分页
 func GetListOrderByPageAndUserID(userID uint, page int, pageSize int) (outOrderList []*Order, count int64, err error) {
 	// 加载数据项
-	if err := mysql.DB.Debug().Preload("OrderItem").Where("user_id = ?", userID).Offset((page - 1) * pageSize).Limit(pageSize).Find(&outOrderList).Error; err != nil {
+	if err := mysql.DB.Preload("OrderItem").Where("user_id = ?", userID).Offset((page - 1) * pageSize).Limit(pageSize).Find(&outOrderList).Error; err != nil {
 		return nil, 0, err
 	}
-	if err := mysql.DB.Debug().Where("user_id = ?", userID).Find(&Order{}).Count(&count).Error; err != nil {
+	if err := mysql.DB.Where("user_id = ?", userID).Find(&Order{}).Count(&count).Error; err != nil {
 		return nil, 0, err
 	}
 

@@ -19,5 +19,9 @@ func InitMySQL(cfg *config.MySQLConfig) (err error) {
 	if err != nil {
 		panic(err.Error())
 	}
+	// 如果是非生产环境则使用Debug
+	if !config.Conf.Release {
+		DB = DB.Debug()
+	}
 	return
 }

@@ -44,7 +44,7 @@ func GetCartByUserID(userID uint) (outCart *Cart, err error) {
 
 // UpdateCart 更新购物车
 func UpdateCart(cart *Cart) (outCart *Cart, err error) {
-	if err := mysql.DB.Debug().Where("id = ?", cart.ID).Save(cart).Error; err != nil {
+	if err := mysql.DB.Where("id = ?", cart.ID).Save(cart).Error; err != nil {
 		return nil, err
 	}
 	return cart, nil
@@ -56,7 +56,7 @@ func CreateCartItemAndUpdateCart(inItem *CartItem, inCart *Cart) (err error) {
 		if err := mysql.DB.Create(&inItem).Error; err != nil {
 			return err
 		}
-		if err := mysql.DB.Debug().Where("id = ?", inCart.ID).Save(inCart).Error; err != nil {
+		if err := mysql.DB.Where("id = ?", inCart.ID).Save(inCart).Error; err != nil {
 			return err
 		}
 		return nil
@@ -87,10 +87,10 @@ func UpdateCartItemAndUpdateCart(item *CartItem, cart *Cart) (err error) {
 
 	err = mysql.DB.Transaction(func(tx *gorm.DB) error {
 		// 在事务中执行一些 db 操作（从这里开始，您应该使用 'tx' 而不是 'db'）
-		if err := mysql.DB.Debug().Where("id = ?", item.ID).Save(item).Error; err != nil {
+		if err := mysql.DB.Where("id = ?", item.ID).Save(item).Error; err != nil {
 			return err
 		}
-		if err := mysql.DB.Debug().Where("id = ?", cart.ID).Save(cart).Error; err != nil {
+		if err := mysql.DB.Where("id = ?", cart.ID).Save(cart).Error; err != nil {
 			return err
 		}
 		// 返回 nil 提交事务
@@ -107,10 +107,10 @@ func DeleteCartItem(userID uint, inItem *CartItem, cart *Cart) (err error) {
 	//
 	err = mysql.DB.Transaction(func(tx *gorm.DB) error {
 		//
-		if err := mysql.DB.Debug().Where("user_id = ?", userID).Delete(inItem).Error; err != nil {
+		if err := mysql.DB.Where("user_id = ?", userID).Delete(inItem).Error; err != nil {
 			return err
 		}
-		if err := mysql.DB.Debug().Where("user_id = ?", userID).Where("id = ?", cart.ID).Save(cart).Error; err != nil {
+		if err := mysql.DB.Where("user_id = ?", userID).Where("id = ?", cart.ID).Save(cart).Error; err != nil {
 			return err
 		}
 		return nil
@@ -121,7 +121,7 @@ func DeleteCartItem(userID uint, inItem *CartItem, cart *Cart) (err error) {
 
 // DeleteCartItemsByIDs 删除多项
 func DeleteCartItemsByIDs(itemIDs []int) (err error) {
-	if err := mysql.DB.Debug().Delete(&CartItem{}, itemIDs).Error; err != nil {
+	if err := mysql.DB.Delete(&CartItem{}, itemIDs).Error; err != nil {
 		return err
 	}
 	return nil
@@ -129,10 +129,10 @@ func DeleteCartItemsByIDs(itemIDs []int) (err error) {
 
 // GetCartItemListByPage 分页
 func GetCartItemListByPage(cartID uint, page int, pageSize int) (itemList []*CartItem, count int64, err error) {
-	if err := mysql.DB.Debug().Where("cart_id = ?", cartID).Offset((page - 1) * pageSize).Limit(pageSize).Find(&itemList).Error; err != nil {
+	if err := mysql.DB.Where("cart_id = ?", cartID).Offset((page - 1) * pageSize).Limit(pageSize).Find(&itemList).Error; err != nil {
 		return nil, 0, err
 	}
-	if err := mysql.DB.Debug().Where("cart_id = ?", cartID).Find(&CartItem{}).Count(&count).Error; err != nil {
+	if err := mysql.DB.Where("cart_id = ?", cartID).Find(&CartItem{}).Count(&count).Error; err != nil {
 		return nil, 0, err
 	}
 

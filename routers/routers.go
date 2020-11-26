@@ -72,7 +72,7 @@ func userGroup(g *gin.RouterGroup) {
 	user := g.Group("/user").Use(middlewares.JWTTokenCheck())
 	{
 		// 修改
-		user.PUT("", middlewares.ID(), controller.UpdateUser)
+		user.PUT("", controller.UpdateUser)
 		// user.DELETE("", controller.Delete)
 		// 分页校验 middlewares.Page()
 		user.GET("", middlewares.Page(), controller.ListUserByPage)

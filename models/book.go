@@ -45,7 +45,7 @@ func GetBookListByIDs(bookIDs []uint) (outBookList []*Book, err error) {
 
 // UpdateBook 更新数据
 func UpdateBook(info *Book) (outBook *Book, err error) {
-	if err := mysql.DB.Debug().Where("id = ?", info.ID).Save(info).Error; err != nil {
+	if err := mysql.DB.Where("id = ?", info.ID).Save(info).Error; err != nil {
 		return nil, err
 	}
 	outBook = info
@@ -54,7 +54,7 @@ func UpdateBook(info *Book) (outBook *Book, err error) {
 
 // DeleteBookByID 通过ID删除书籍
 func DeleteBookByID(userID uint, bookID int) (err error) {
-	if err := mysql.DB.Debug().Where("user_id = ?", userID).Where("id = ?", bookID).Delete(&Book{}).Error; err != nil {
+	if err := mysql.DB.Where("user_id = ?", userID).Where("id = ?", bookID).Delete(&Book{}).Error; err != nil {
 		return err
 	}
 	return nil
@@ -63,7 +63,7 @@ func DeleteBookByID(userID uint, bookID int) (err error) {
 // DeleteBookByIDs 通过ID删除多个
 func DeleteBookByIDs(userID uint, bookIDs []uint) (err error) {
 	//
-	if err := mysql.DB.Debug().Where("user_id = ?", userID).Where("id in ?", bookIDs).Delete(&Book{}).Error; err != nil {
+	if err := mysql.DB.Where("user_id = ?", userID).Where("id in ?", bookIDs).Delete(&Book{}).Error; err != nil {
 		return err
 	}
 	return nil
@@ -71,10 +71,10 @@ func DeleteBookByIDs(userID uint, bookIDs []uint) (err error) {
 
 // GetListBookByPage 获取列表 分页
 func GetListBookByPage(page int, pageSize int) (bookList []*Book, count int64, err error) {
-	if err := mysql.DB.Debug().Offset((page - 1) * pageSize).Limit(pageSize).Find(&bookList).Error; err != nil {
+	if err := mysql.DB.Offset((page - 1) * pageSize).Limit(pageSize).Find(&bookList).Error; err != nil {
 		return nil, 0, err
 	}
-	if err := mysql.DB.Debug().Find(&Book{}).Count(&count).Error; err != nil {
+	if err := mysql.DB.Find(&Book{}).Count(&count).Error; err != nil {
 		return nil, 0, err
 	}
 	return bookList, count, nil
