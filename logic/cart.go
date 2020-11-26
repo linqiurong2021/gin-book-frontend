@@ -230,7 +230,7 @@ func DeleteCartItemByID(c *gin.Context) (ok bool, err error) {
 	// 更新数据
 	cart.TotalAmount = cart.TotalAmount - inItem.Amount
 	cart.TotalCount = cart.TotalCount - inItem.Count
-	err = services.DeleteCartItem(inItem, cart)
+	err = services.DeleteCartItem(cached.User.ID, inItem, cart)
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return false, err
 	}

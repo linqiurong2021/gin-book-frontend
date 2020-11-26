@@ -51,8 +51,17 @@ func UpdateBook(info *Book) (outBook *Book, err error) {
 }
 
 // DeleteBookByID 通过ID删除书籍
-func DeleteBookByID(bookID int) (err error) {
-	if err := mysql.DB.Debug().Where("id = ?", bookID).Delete(&Book{}).Error; err != nil {
+func DeleteBookByID(userID uint, bookID int) (err error) {
+	if err := mysql.DB.Debug().Where("user_id = ?", userID).Where("id = ?", bookID).Delete(&Book{}).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+// DeleteBookByIDs 通过ID删除多个
+func DeleteBookByIDs(userID uint, bookIDs []uint) (err error) {
+	//
+	if err := mysql.DB.Debug().Where("user_id = ?", userID).Where("id in ?", bookIDs).Delete(&Book{}).Error; err != nil {
 		return err
 	}
 	return nil
@@ -67,12 +76,4 @@ func GetListBookByPage(page int, pageSize int) (bookList []*Book, count int64, e
 		return nil, 0, err
 	}
 	return bookList, count, nil
-}
-
-// GetListBook 获取列表 不分页
-func GetListBook() (bookList []*Book, err error) {
-	if err := mysql.DB.Debug().Find(&bookList).Error; err != nil {
-		return nil, err
-	}
-	return bookList, nil
 }

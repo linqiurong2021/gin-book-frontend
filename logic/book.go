@@ -1,6 +1,7 @@
 package logic
 
 import (
+	"linqiurong2021/gin-book-frontend/cached"
 	"linqiurong2021/gin-book-frontend/dao"
 	"linqiurong2021/gin-book-frontend/models"
 	"linqiurong2021/gin-book-frontend/services"
@@ -58,7 +59,7 @@ func UpdateBook(c *gin.Context) (ok bool, err error) {
 func DeleteBook(c *gin.Context) (ok bool, err error) {
 	var delete dao.ID
 	c.BindUri(&delete)
-	err = services.DeleteBookByID(delete.ID)
+	err = services.DeleteBookByID(cached.User.ID, delete.ID)
 	if err != nil {
 		// 删除失败
 		c.JSON(http.StatusOK, utils.Success(err.Error(), ""))

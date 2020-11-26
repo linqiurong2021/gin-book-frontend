@@ -95,7 +95,7 @@ func GetUserByFieldValue(field string, value string) (outUser *User, rowsAffecte
 	return user, 1, nil
 }
 
-// GetListUserByPage 获取列表 分页
+// GetListUserByPage 获取列表 分页 (暂用不到)
 func GetListUserByPage(page int, pageSize int) (userList []*User, count int64, err error) {
 	if err := mysql.DB.Debug().Offset((page - 1) * pageSize).Limit(pageSize).Find(&userList).Error; err != nil {
 		return nil, 0, err
@@ -107,7 +107,7 @@ func GetListUserByPage(page int, pageSize int) (userList []*User, count int64, e
 	return userList, count, nil
 }
 
-// GetListUser 获取列表 不分页
+// GetListUser 获取列表 不分页  (暂用不到)
 func GetListUser() (userList []*User, err error) {
 	if err := mysql.DB.Debug().Find(&userList).Error; err != nil {
 		return nil, err

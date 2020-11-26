@@ -132,7 +132,7 @@ func OrderStatus(c *gin.Context) (ok bool, err error) {
 		return
 	}
 
-	ok, err = services.UpdateOrderByIDAndState(orderStatus.OrderID, orderState)
+	ok, err = services.UpdateOrderByIDAndState(cached.User.ID, orderStatus.OrderID, orderState)
 	if err != nil {
 		return false, err
 	}

@@ -24,7 +24,7 @@ func Login(c *gin.Context) (string, bool) {
 		return "", false
 	}
 	// 验证码校验
-	if !CheckCode(login.Code) {
+	if !validator.CheckCode(login.Code) {
 		c.JSON(http.StatusBadRequest, utils.BadRequest("code invalidate", ""))
 		return "", false
 	}

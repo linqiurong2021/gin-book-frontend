@@ -40,8 +40,8 @@ func UpdateCartItemAndUpdateCart(info *models.CartItem, cart *models.Cart) (err 
 }
 
 // DeleteCartItem 通过ID删除商品项
-func DeleteCartItem(inItem *models.CartItem, cart *models.Cart) (err error) {
-	return models.DeleteCartItem(inItem, cart)
+func DeleteCartItem(userID uint, inItem *models.CartItem, cart *models.Cart) (err error) {
+	return models.DeleteCartItem(userID, inItem, cart)
 }
 
 // DeleteCartItemByIDs 通过ID删除商品项

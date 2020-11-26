@@ -35,27 +35,7 @@ func CreateOrder(inOrder *Order) (outOrder *Order, err error) {
 	return
 }
 
-// UpdateOrder 更新订单
-func UpdateOrder(inOrder *Order) (outOrder *Order, err error) {
-	if err := mysql.DB.Create(&inOrder).Error; err != nil {
-		return nil, err
-	}
-	outOrder = inOrder
-	return
-}
-
-// GetOrderByID 通过ID获取用户信息
-func GetOrderByID(orderID uint) (outOrder *Order, err error) {
-	var order = new(Order)
-	if err := mysql.DB.Where("id = ?", orderID).First(&order).Error; err != nil {
-		return nil, err
-	}
-	outOrder = order
-
-	return
-}
-
-// GetOrderByUserIDAndID 通过ID获取用户订单信息
+// GetOrderByUserIDAndID 通过ID获取订单订单信息
 func GetOrderByUserIDAndID(userID uint, orderID uint) (outOrder *Order, err error) {
 	var order = new(Order)
 	if err := mysql.DB.Where("user_id = ?", userID).Where("id = ?", orderID).First(&order).Error; err != nil {
@@ -67,23 +47,31 @@ func GetOrderByUserIDAndID(userID uint, orderID uint) (outOrder *Order, err erro
 }
 
 // UpdateOrderByIDAndState 更新状态
-func UpdateOrderByIDAndState(orderID uint, status uint) (ok bool, err error) {
+func UpdateOrderByIDAndState(userID uint, orderID uint, status uint) (ok bool, err error) {
 
-	if err := mysql.DB.Model(&Order{}).Debug().Where("id = ?", orderID).UpdateColumn("state", status).Error; err != nil {
+	if err := mysql.DB.Debug().Model(&Order{}).Where("user_id = ?", userID).Where("id = ?", orderID).UpdateColumn("state", status).Error; err != nil {
 		return false, err
 	}
 	return true, nil
 }
 
-// DeleteOrderByID 通过ID删除用户
-func DeleteOrderByID(orderID int) (outOrder *Order, err error) {
-	if err := mysql.DB.Debug().Where("id = ?", orderID).Delete(&Order{}).Error; err != nil {
+// DeleteOrderByID 通过ID删除订单
+func DeleteOrderByID(userID uint, orderID int) (outOrder *Order, err error) {
+	if err := mysql.DB.Debug().Where("user_id = ?", userID).Where("id = ?", orderID).Delete(&Order{}).Error; err != nil {
 		return nil, err
 	}
 	return
 }
 
-// GetListOrderByPageAndUserID 通过用户ID分页
+// DeleteOrderByIDs 通过ID删除订单
+func DeleteOrderByIDs(userID uint, orderID []int) (outOrder *Order, err error) {
+	if err := mysql.DB.Debug().Where("user_id = ?", userID).Where("id in ?", orderID).Delete(&Order{}).Error; err != nil {
+		return nil, err
+	}
+	return
+}
+
+// GetListOrderByPageAndUserID 通过订单ID分页
 func GetListOrderByPageAndUserID(userID uint, page int, pageSize int) (outOrderList []*Order, count int64, err error) {
 	// 加载数据项
 	if err := mysql.DB.Debug().Preload("OrderItem").Where("user_id = ?", userID).Offset((page - 1) * pageSize).Limit(pageSize).Find(&outOrderList).Error; err != nil {

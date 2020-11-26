@@ -103,14 +103,14 @@ func UpdateCartItemAndUpdateCart(item *CartItem, cart *Cart) (err error) {
 }
 
 // DeleteCartItem 删除购物车项
-func DeleteCartItem(inItem *CartItem, cart *Cart) (err error) {
+func DeleteCartItem(userID uint, inItem *CartItem, cart *Cart) (err error) {
 	//
 	err = mysql.DB.Transaction(func(tx *gorm.DB) error {
 		//
-		if err := mysql.DB.Debug().Delete(inItem).Error; err != nil {
+		if err := mysql.DB.Debug().Where("user_id = ?", userID).Delete(inItem).Error; err != nil {
 			return err
 		}
-		if err := mysql.DB.Debug().Where("id = ?", cart.ID).Save(cart).Error; err != nil {
+		if err := mysql.DB.Debug().Where("user_id = ?", userID).Where("id = ?", cart.ID).Save(cart).Error; err != nil {
 			return err
 		}
 		return nil

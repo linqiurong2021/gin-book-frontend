@@ -9,31 +9,20 @@ func CreateOrder(inOrder *models.Order) (outOrder *models.Order, err error) {
 	return models.CreateOrder(inOrder)
 }
 
-// GetOrderByID 通过订单ID获取
-func GetOrderByID(OrderID uint) (Order *models.Order, err error) {
-	return models.GetOrderByID(OrderID)
-}
-
 // GetOrderByUserIDAndID 通过订单ID获取
 func GetOrderByUserIDAndID(userID uint, OrderID uint) (Order *models.Order, err error) {
 	return models.GetOrderByUserIDAndID(userID, OrderID)
 }
 
-// UpdateOrder 更新数据
-func UpdateOrder(info *models.Order) (Order *models.Order, err error) {
-
-	return models.UpdateOrder(info)
-}
-
 // UpdateOrderByIDAndState 更新订单状态
-func UpdateOrderByIDAndState(orderID uint, status uint) (bool, error) {
-	return models.UpdateOrderByIDAndState(orderID, status)
+func UpdateOrderByIDAndState(userID uint, orderID uint, status uint) (bool, error) {
+	return models.UpdateOrderByIDAndState(userID, orderID, status)
 }
 
 // DeleteOrderByID 通过ID删除订单
-func DeleteOrderByID(OrderID int) (Order *models.Order, err error) {
+func DeleteOrderByID(userID uint, OrderID int) (Order *models.Order, err error) {
 
-	return models.DeleteOrderByID(OrderID)
+	return models.DeleteOrderByID(userID, OrderID)
 }
 
 // GetListOrderByPageAndUserID 通过ID删除订单

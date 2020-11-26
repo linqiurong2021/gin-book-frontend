@@ -26,20 +26,13 @@ func UpdateBook(info *models.Book) (book *models.Book, err error) {
 }
 
 // DeleteBookByID 通过ID删除书籍
-func DeleteBookByID(bookID int) (err error) {
-	err = models.DeleteBookByID(bookID)
+func DeleteBookByID(userID uint, bookID int) (err error) {
+	err = models.DeleteBookByID(userID, bookID)
 	return
 }
 
 // GetListBookByPage 通过ID删除书籍
 func GetListBookByPage(page int, pageSize int) (bookList []*models.Book, count int64, err error) {
 	bookList, count, err = models.GetListBookByPage(page, pageSize)
-	return
-}
-
-// GetListBook 通过ID删除书籍
-func GetListBook() (bookList []*models.Book, err error) {
-
-	bookList, err = models.GetListBook()
 	return
 }
