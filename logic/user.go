@@ -1,13 +1,14 @@
 package logic
 
 import (
-	"linqiurong2021/gin-book-frontend/cached"
-	"linqiurong2021/gin-book-frontend/dao"
-	"linqiurong2021/gin-book-frontend/models"
-	"linqiurong2021/gin-book-frontend/services"
-	"linqiurong2021/gin-book-frontend/utils"
-	"linqiurong2021/gin-book-frontend/validator"
 	"net/http"
+
+	"github.com/linqiurong2021/gin-book-frontend/cached"
+	"github.com/linqiurong2021/gin-book-frontend/dao"
+	"github.com/linqiurong2021/gin-book-frontend/models"
+	"github.com/linqiurong2021/gin-book-frontend/services"
+	"github.com/linqiurong2021/gin-book-frontend/utils"
+	"github.com/linqiurong2021/gin-book-frontend/validator"
 
 	"github.com/gin-gonic/gin"
 )

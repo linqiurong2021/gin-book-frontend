@@ -1,7 +1,7 @@
 package services
 
 import (
-	"linqiurong2021/gin-book-frontend/models"
+	"github.com/linqiurong2021/gin-book-frontend/models"
 )
 
 // CreateOrder 创建订单

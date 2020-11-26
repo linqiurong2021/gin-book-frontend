@@ -1,10 +1,11 @@
 package routers
 
 import (
-	"linqiurong2021/gin-book-frontend/controller"
-	"linqiurong2021/gin-book-frontend/middlewares"
-	"linqiurong2021/gin-book-frontend/utils"
 	"net/http"
+
+	"github.com/linqiurong2021/gin-book-frontend/controller"
+	"github.com/linqiurong2021/gin-book-frontend/middlewares"
+	"github.com/linqiurong2021/gin-book-frontend/utils"
 
 	"github.com/gin-gonic/gin"
 )

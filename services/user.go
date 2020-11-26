@@ -1,7 +1,7 @@
 package services
 
 import (
-	"linqiurong2021/gin-book-frontend/models"
+	"github.com/linqiurong2021/gin-book-frontend/models"
 )
 
 // CreateUser 创建用户

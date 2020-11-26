@@ -1,9 +1,10 @@
 package controller
 
 import (
-	"linqiurong2021/gin-book-frontend/logic"
-	"linqiurong2021/gin-book-frontend/utils"
 	"net/http"
+
+	"github.com/linqiurong2021/gin-book-frontend/logic"
+	"github.com/linqiurong2021/gin-book-frontend/utils"
 
 	"github.com/gin-gonic/gin"
 )

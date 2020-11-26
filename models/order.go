@@ -1,6 +1,6 @@
 package models
 
-import "linqiurong2021/gin-book-frontend/mysql"
+import "github.com/linqiurong2021/gin-book-frontend/mysql"
 
 // 区别在于定义模型时，has one 关系，把附属者 CreditCard 作为所有者 User 的一个字段，更自然；而 belongs to 关系，把所有者 User 作为附属者 CreditCard 的一个字段。
 

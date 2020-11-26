@@ -1,14 +1,28 @@
 package middlewares
 
 import (
-	"linqiurong2021/gin-book-frontend/cached"
-	"linqiurong2021/gin-book-frontend/dao"
-	"linqiurong2021/gin-book-frontend/utils"
-	"linqiurong2021/gin-book-frontend/validator"
 	"net/http"
+
+	"github.com/linqiurong2021/gin-book-frontend/cached"
+	"github.com/linqiurong2021/gin-book-frontend/dao"
+	"github.com/linqiurong2021/gin-book-frontend/utils"
+	"github.com/linqiurong2021/gin-book-frontend/validator"
 
 	"github.com/gin-gonic/gin"
 )
+
+// CROS 跨域
+func CROS() gin.HandlerFunc {
+	//
+	return func(c *gin.Context) {
+		c.Writer.Header().Set("", "")
+		c.Writer.Header().Set("", "")
+		c.Writer.Header().Set("", "")
+		c.Writer.Header().Set("", "")
+
+		c.Next()
+	}
+}
 
 // AuthCheck 权限校验
 func AuthCheck() gin.HandlerFunc {

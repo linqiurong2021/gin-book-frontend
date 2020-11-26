@@ -2,9 +2,10 @@ package cached
 
 import (
 	"fmt"
-	"linqiurong2021/gin-book-frontend/config"
-	"linqiurong2021/gin-book-frontend/models"
 	"time"
+
+	"github.com/linqiurong2021/gin-book-frontend/config"
+	"github.com/linqiurong2021/gin-book-frontend/models"
 
 	"github.com/dgrijalva/jwt-go"
 )

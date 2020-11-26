@@ -3,7 +3,8 @@ package models
 import (
 	"errors"
 	"fmt"
-	"linqiurong2021/gin-book-frontend/mysql"
+
+	"github.com/linqiurong2021/gin-book-frontend/mysql"
 
 	"gorm.io/gorm"
 )

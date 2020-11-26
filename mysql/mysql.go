@@ -2,7 +2,8 @@ package mysql
 
 import (
 	"fmt"
-	"linqiurong2021/gin-book-frontend/config"
+
+	"github.com/linqiurong2021/gin-book-frontend/config"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"

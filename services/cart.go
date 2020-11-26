@@ -1,6 +1,6 @@
 package services
 
-import "linqiurong2021/gin-book-frontend/models"
+import "github.com/linqiurong2021/gin-book-frontend/models"
 
 // CreateCart 创建商品项
 func CreateCart(inCart *models.Cart) (outCart *models.Cart, err error) {

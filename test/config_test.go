@@ -2,8 +2,9 @@ package test
 
 import (
 	"fmt"
-	"linqiurong2021/gin-book-frontend/config"
 	"testing"
+
+	"github.com/linqiurong2021/gin-book-frontend/config"
 
 	"github.com/bmizerany/assert"
 )

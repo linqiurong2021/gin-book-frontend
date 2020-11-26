@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
-	"linqiurong2021/gin-book-frontend/config"
-	"linqiurong2021/gin-book-frontend/models"
-	"linqiurong2021/gin-book-frontend/mysql"
-	"linqiurong2021/gin-book-frontend/routers"
-	"linqiurong2021/gin-book-frontend/validator"
 	"os"
+
+	"github.com/linqiurong2021/gin-book-frontend/config"
+	"github.com/linqiurong2021/gin-book-frontend/models"
+	"github.com/linqiurong2021/gin-book-frontend/mysql"
+	"github.com/linqiurong2021/gin-book-frontend/routers"
+	"github.com/linqiurong2021/gin-book-frontend/validator"
 
 	"github.com/gin-gonic/gin"
 )
